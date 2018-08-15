@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {SERVER_URL} from './constants.js';
+import {SERVER_URL} from '../constants.js';
+import ReactTable from "react-table";
+import 'react-table/react-table.css';
 
 class Carlist extends Component {
 
