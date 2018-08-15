@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {SERVER_URL} from '../constants.js';
-import ReactTable from "react-table";
+import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import {SERVER_URL} from '../constants.js';
 
 class Carlist extends Component {
 
@@ -11,33 +11,43 @@ class Carlist extends Component {
   }
 
   componentDidMount() {
-    // Use imported constant in the fetch method
-    fetch(SERVER_URL + '/api/cars')
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-          cars: responseData._embedded.cars,
-        });
-      })
-      .catch(err => console.error(err));
+    this.fetchCars();
+  }
+
+  // Fetch all cars
+  fetchCars = () => {
+    fetch(SERVER_URL + 'api/cars')
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.setState({
+        cars: responseData._embedded.cars,
+      });
+    })
+    .catch(err => console.error(err));
   }
 
   render() {
-    const tableRows = this.state.cars.map((car, index) =>
-      <tr key={index}>
-        <td>{car.brand}</td>
-        <td>{car.model}</td>
-        <td>{car.color}</td>
-        <td>{car.year }</td>
-        <td>{car.price}</td>
-      </tr>
-    );
+    const columns = [{
+      Header: 'Brand',
+      accessor: 'brand',
+    }, {
+      Header: 'Model',
+      accessor: 'model', 
+    }, {
+      Header: 'Color',
+      accessor: 'color',
+    }, {
+      Header: 'Year',
+      accessor: 'year',
+    }, {
+      Header: 'Price $',
+      accessor: 'price',
+    },]
 
     return (
       <div className="App">
-        <table>
-          <tbody>{tableRows}</tbody>
-        </table>
+        <ReactTable data={this.state.cars} 
+          columns={columns} filterable={true}/>
       </div>
     );
   }
