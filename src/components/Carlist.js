@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {SERVER_URL} from '../constants.js';
+import AddCar from './AddCar.js';
 
 class Carlist extends Component {
 
@@ -28,6 +29,15 @@ class Carlist extends Component {
       });
     })
     .catch(err => console.error(err));
+  }
+
+  // Add new car
+  addCar(car) {
+    fetch(SERVER_URL + 'api/cars', { method: 'POST', 
+      headers: { 'Content-Type': 'application/json', }, 
+      body: JSON.stringify(car)})
+    .then(res => this.fetchCars())
+    .catch(err => console.error(err))
   }
 
   confirmDelete = (link) => {
@@ -63,23 +73,18 @@ class Carlist extends Component {
   const columns = [{
     Header: 'Brand',
     accessor: 'brand',
-    Cell: this.renderEditable
   }, {
     Header: 'Model',
     accessor: 'model',
-    Cell: this.renderEditable
   }, {
     Header: 'Color',
     accessor: 'color',
-    Cell: this.renderEditable
   }, {
     Header: 'Year',
     accessor: 'year',
-    Cell: this.renderEditable
   }, {
     Header: 'Price €',
     accessor: 'price',
-    Cell: this.renderEditable
   }, {
     id: 'delbutton',
     sortable: false,
@@ -91,6 +96,7 @@ class Carlist extends Component {
 
   return (
     <div className="App">
+      <AddCar addCar={this.addCar} fetchCars={this.fetchCars}/>
       <ReactTable data={this.state.cars} columns={columns} 
         filterable={true} pageSize={10}/>
       <ToastContainer autoClose={1500}/>  
