@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from "react-table";
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import 'react-table/react-table.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -129,25 +131,32 @@ class Carlist extends Component {
     filterable: false,
     width: 100,
     accessor: '_links.self.href',
-    Cell: ({value, row}) => (<button
-      onClick={()=>{this.updateCar(row, value)}}>Save</button>)
+    Cell: ({value, row}) => (<Button size="small" variant="flat" color="primary" 
+      onClick={()=>{this.updateCar(row, value)}}>Save</Button>)
   }, {
     id: 'delbutton',
     sortable: false,
     filterable: false,
     width: 100,
     accessor: '_links.self.href',
-    Cell: ({value}) => (<button 
-      onClick={()=>{this.confirmDelete(value)}}>Delete</button>)
+    Cell: ({value}) => (<Button size="small" variant="flat" color="secondary"
+      onClick={()=>{this.confirmDelete(value)}}>Delete</Button>)
   }]
 
   return (
     <div className="App">
-      <CSVLink data={this.state.cars} separator=";">Export CSV</CSVLink>
-      <AddCar addCar={this.addCar} fetchCars={this.fetchCars}/>
-      <ReactTable data={this.state.cars} columns={columns} 
-        filterable={true} pageSize={10}/>
-      <ToastContainer autoClose={1500}/>  
+      <Grid container>
+        <Grid item>
+          <AddCar addCar={this.addCar} fetchCars={this.fetchCars}/>  
+        </Grid>
+        <Grid item style={{padding: 20}}>
+          <CSVLink data={this.state.cars} separator=";">Export CSV</CSVLink>  
+        </Grid>
+      </Grid>
+
+        <ReactTable data={this.state.cars} columns={columns} 
+          filterable={true} pageSize={10}/>
+        <ToastContainer autoClose={1500}/>  
     </div>
     );
   }
