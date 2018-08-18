@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import ReactTable from "react-table";
+import 'react-table/react-table.css';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import 'react-table/react-table.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import Snackbar from '@material-ui/core/Snackbar';
 import { CSVLink } from 'react-csv';
 import {SERVER_URL} from '../constants.js';
 import AddCar from './AddCar.js';
@@ -15,8 +14,12 @@ class Carlist extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { cars: []};
+    this.state = { cars: [], open: false, message: ''};
   }
+
+  handleClose = (event, reason) => {
+    this.setState({ open: false });
+  };
 
   componentDidMount() {
     this.fetchCars();
@@ -59,15 +62,11 @@ class Carlist extends Component {
   onDelClick = (link) => {
     fetch(link, {method: 'DELETE'})
     .then(res => {
-      toast.success("Car deleted", {
-        position: toast.POSITION.BOTTOM_LEFT
-      });
+      this.setState({open: true, message: 'Car deleted'});
       this.fetchCars();
     })
     .catch(err => {
-      toast.error("Error when deleting", {
-        position: toast.POSITION.BOTTOM_LEFT
-      });
+      this.setState({open: true, message: 'Error when deleting'});
       console.error(err)
     })
   }
@@ -79,9 +78,10 @@ class Carlist extends Component {
     body: JSON.stringify(car)
     })
     .then( res => 
-      toast.success("Changes saved", {
-        position: toast.POSITION.BOTTOM_LEFT
-      })
+      this.setState({open: true, message: 'Changes saved'})
+    )
+    .catch( err =>
+      this.setState({open: true, message: 'Error when saving'})
     )
   }
 
@@ -156,7 +156,10 @@ class Carlist extends Component {
 
         <ReactTable data={this.state.cars} columns={columns} 
           filterable={true} pageSize={10}/>
-        <ToastContainer autoClose={1500}/>  
+        <Snackbar 
+          style = {{width: 300, color: 'green'}}
+          open={this.state.open} onClose={this.handleClose}
+          autoHideDuration={1500} message={this.state.message} />
     </div>
     );
   }
