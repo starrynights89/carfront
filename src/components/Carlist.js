@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { CSVLink } from 'react-csv';
 import {SERVER_URL} from '../constants.js';
 import AddCar from './AddCar.js';
 
@@ -142,6 +143,7 @@ class Carlist extends Component {
 
   return (
     <div className="App">
+      <CSVLink data={this.state.cars} separator=";">Export CSV</CSVLink>
       <AddCar addCar={this.addCar} fetchCars={this.fetchCars}/>
       <ReactTable data={this.state.cars} columns={columns} 
         filterable={true} pageSize={10}/>
