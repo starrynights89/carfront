@@ -37,15 +37,6 @@ class Carlist extends Component {
     .catch(err => console.error(err));
   }
 
-  // Add new car
-  addCar(car) {
-    fetch(SERVER_URL + 'api/cars', { method: 'POST', 
-      headers: { 'Content-Type': 'application/json', }, 
-      body: JSON.stringify(car)})
-    .then(res => this.fetchCars())
-    .catch(err => console.error(err))
-  }
-
   confirmDelete = (link) => {
     confirmAlert({
       message: 'Are you sure to delete?',
@@ -69,6 +60,15 @@ class Carlist extends Component {
       this.setState({open: true, message: 'Error when deleting'});
       console.error(err)
     })
+  }
+
+  // Add new car
+  addCar(car) {
+    fetch(SERVER_URL + 'api/cars', { method: 'POST', 
+      headers: { 'Content-Type': 'application/json', }, 
+      body: JSON.stringify(car)})
+    .then(res => this.fetchCars())
+    .catch(err => console.error(err))
   }
 
   // Update car
