@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 class AddCar extends React.Component {
 
+  // Constructor to add cars to db
   constructor(props) {
   	super(props);
   	this.state = {brand: '', model: '', year: '', color: '', price: ''};
