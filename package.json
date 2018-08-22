@@ -23,5 +23,6 @@
     "enzyme-adapter-react-16": "^1.2.0",
     "eslint": "^5.4.0",
     "react-test-renderer": "^16.4.2"
-  }
+  },
+  "homepage": "http://alexander.cardatabase.io/"
 }
